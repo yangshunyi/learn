@@ -1,0 +1,54 @@
+CORS （网络通信技术）
+
+CORS是一种允许当前域的资源（比如html/js/web service）被其他域（domain）的脚本请求访问的机制,通常由于同域安全策略浏览器会禁止这种跨域请求.
+
+实现CORS通信的关键是服务器,只要服务器实现了CORS接口，就可以跨源通信.
+
+简单模型
+
+支持get/post/put/delete请求，例如返回Access-Control-Allow-Origin:*,但是不允许自定义header且会忽略cookies，且post数据格式有限制,
+只支持‘text/plain','application/x-www-urlencoded'and'multipart/form-data'，其中’text/plain'默认支持,
+后面两种需要下面的预检请求和服务器协商.
+
+有三个与CORS请求相关的字段，都以Access-Control-开头.
+
+Access-Control-Allow-Origin   该字段是必须的。它的值要么是请求时Origin字段的值，要么是一个*，表示接受任意域名的请求。
+
+Access-Control-Allow-Credentials    
+
+该字段可选。它的值是一个布尔值，表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中。设为true，即表示服务器明确许可，
+Cookie可以包含在请求中，一起发给服务器。这个值也只能设为true，如果服务器不要浏览器发送Cookie，删除该字段即可。
+
+Access-Control-Expose-Headers  
+
+该字段可选。CORS请求时，XMLHttpRequest对象的getResponseHeader()方法只能拿到6个基本字段：Cache-Control、Content-Language、Content-Type、
+Expires、Last-Modified、Pragma。如果想拿到其他字段,就必须在Access-Control-Expose-Headers里面指定。
+上面的例子指定，getResponseHeader('FooBar')可以返回FooBar字段的值。
+
+
+CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定Access-Control-Allow-Credentials字段。
+Access-Control-Allow-Credentials: true
+
+另一方面，开发者必须在AJAX请求中打开withCredentials属性.
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+否则，即使服务器同意发送Cookie，浏览器也不会发送。或者，服务器要求设置Cookie，浏览器也不会处理。
+但是，如果省略withCredentials设置，有的浏览器还是会一起发送Cookie。这时，可以显式关闭withCredentials。
+
+xhr.withCredentials = false;
+需要注意的是，如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。
+同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，
+且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。
+
+
+
+
+
+
+
+
+
+协商模型/预检请求（Preflighted Request）
+
+浏览器发出PUT请求，OPTION请求返回Access-Control-Allow-Origin:*,Access-Control-Allow-Methods:’PUT’，服务器同意所有域的PUT请求，浏览器收到并继续
+发出真正的PUT请求,服务器响应并再次返回Access-Control-Allow-Origin:*,允许浏览器的脚本执行服务器返回的数据。
