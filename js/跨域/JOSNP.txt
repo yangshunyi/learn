@@ -1,0 +1,12 @@
+JSONP的最基本的原理是：动态添加一个<script>标签，而script标签的src属性是没有跨域的限制的.
+
+简述原理与过程：首先在客户端注册一个callback, 然后把callback的名字传给服务器（这里客户端和服务器约定以key为jsonp的查询字符串值传递).
+此时，服务器先生成 json 数据。 然后以 javascript 语法的方式，生成一个function , function 名字就是传递上来的参数 jsonp。
+最后将 json 数据直接以入参的方式，放置到 function 中，这样就生成了一段 js 语法的文档，返回给客户端。客户端浏览器，解析script标签，
+并执行返回的 javascript 文档，即执行了预定义的callback函数。
+
+从上述简述可以推出：除了返回函数形式的js代码片段，服务端自然能返回所有符合规范的可执行js片段。
+
+JSONP的缺点是：它只支持GET请求而不支持POST等其它类型的HTTP请求；
+它只支持跨域HTTP请求这种情况，不能解决不同域的两个页面之间如何进行JavaScript调用的问题.
+不能确定响应数据是否得到
