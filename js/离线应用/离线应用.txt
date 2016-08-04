@@ -1,0 +1,51 @@
+离线Web应用，就是在设备上不能上网的情况下仍然可以运行的应用
+
+判断设备是在线还是离线
+
+navigator.onLine=true / false;
+
+为了更好判断网络是否可用 HTMl5定义了两个事件：onlline和offline.
+
+应用缓存  或简称 appcache  ,专门为开发离线Web应用设计的
+
+Appcache是从浏览器的缓存中分成的一块缓存区,想在这个缓存中保存数据，需一个描述文件 manifest file
+
+例：新建一个manifest.appcache文件
+  CACHE MANIFEST
+  #version 1.3
+  CACHE:
+    img/1.jpg
+    img/2.jpg
+    test.css
+  NETWORK:
+     *
+     
+关于manifest.appcache文件，基本格式为三段： CACHE， NETWORK，与 FALLBACK，其中NETWORK和FALLBACK为可选项，而第一行CACHE MANIFEST为固定格式，必须写在前面。
+
+CACHE:（必须）
+
+标识出哪些文件需要缓存，可以是相对路径也可以是绝对路径。例如：aa.css，http://www.baidu.com/aa.js.
+
+NETWORK:（可选）
+
+这一部分是要绕过缓存直接读取的文件，可以使用通配符＊，,也就是说除了上面的cache文件，剩下的文件每次都要重新拉取。例如＊，login.php。
+
+
+FALLBACK:（可选）
+
+指定了一个后备页面，当资源无法访问时，浏览器会使用该页面。该段落的每条记录都列出两个 URI—第一个表示资源，第二个表示后备页面。两个 URI 都必须使用相对路径并且与清单文件同源。可以使用通配符。例如*.html  /offline.html。
+
+然后再相同目录下html文件中添加
+
+<html lang="en" manifest="manifest.appcache">
+
+更新manifest文件
+浏览器发现manifest文件本身发生变化，便会根据新的manifest文件去获取新的资源进行缓存。
+
+当manifest文件列表并没有变化的时候，我们通常通过修改manifest注释的方式来改变文件，从而实现更新。
+
+swapCache方法的意思是重新应用跟新后的缓存来替换原来的缓存！
+
+注意事项：
+1.站点离线存储的容量限制是5M
+2.如果manifest文件，或者内部列举的某一个文件不能正常下载，整个更新过程将视为失败，浏览器继续全部使用老的缓存
