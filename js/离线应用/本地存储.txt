@@ -1,0 +1,28 @@
+localStorage  一直存在本地硬件设备中，即使浏览器关闭，数据仍然存在，属性永久存储.
+
+sessionStorage  后者是存储在session中，session中存储的数据只能在用户进入网站到关闭网站的时间段内有效，窗口一旦关闭就不存在了.
+
+它们均只能存储字符串类型的对象且用法一样；
+
+创建
+localStorage.setItem("username","aaa");
+localStorage.key=value;
+
+获取
+localStorage.getItem("username")
+
+遍历 使用key方法进行遍历
+
+for(var i=0;i< localStorage.length;i++){
+    var name= localStorage.key(i);
+var value = localStorage.getItem(name);
+}
+
+删除
+
+localStorage.removeItem(name)
+
+清空
+
+localStorage.clear()
+
