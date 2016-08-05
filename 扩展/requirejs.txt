@@ -1,0 +1,56 @@
+js模块化编程   模块就是实现特定功能的一组方法. 独立性是模块的重要特点，模块内部最好不与程序的其他部分直接交互.
+只有把不同的函数简单地放在一起，就算是一个模块.
+目前,通过javascript模块规范共有两种 commonJS和AMD.
+
+node.js的模块系统,就是参照commonJS规划实现的.
+在CommonJS中，有一个全局性方法require(),用于加载模块.
+浏览器端模块，不能采用同步加载，只能采用异步加载，这就是AMD规范诞生的背景.
+
+AMD,它采用异步方式加载模块，模块加载不影响它后面语句的运行。所以依赖这个模块的语句，都定义在一个回调函数，
+等到加载完成之后，这个回调函数才会运行.
+AMD 也采用require()语句加载模块，但是不同于CommonJS,它要求两个参数：
+require([module],callback);
+module ,就是一个数组，里面的成员就是要加载的模块；
+callback,是加载成功之后的回调函数.
+
+require.js 
+(1) 实现js文件的异步加载，避免网页失去响应；
+(2)管理模块之间的依赖性，便于代码的编写和维护.
+
+下载require.js 
+　<script src="js/require.js"></script>
+加载这个文件，一个是把它放在网页底部加载,另一个是
+<script src="js/require.js" defer async="true" ></script>
+ansync 属性表明这个文件需要异步加载，避免网页失去响应.IE不支持这个属性，只支持defer,所以把defer也写上.
+加载requier.js以后，就要加载我们自己的代码.假设我们的代码是main.js.
+<script src="js/require.js" data-main="js/main"></script>
+data-main属性的作用是指定网页程序的主模块.由于require.js默认的文件后缀名是js,所以可以把main.js简写成main.
+
+主模板的写法
+
+主模板 意思是整个网页的入口代码,所有代码都是从这儿开始运行.
+如果我们的代码不依赖任何其他模块，那么可以直接写入js代码.
+真正常见的情况是，主模版依赖于其他模块，这时就要使用AMD规定定义的require()函数.
+
+// main.js
+　　require(['moduleA', 'moduleB', 'moduleC'], function (moduleA, moduleB, moduleC){
+　　　　// some code here
+　　});
+　　
+加载的模块会以参数形成传入该函数，从而在回调函数内部就可以使用这些模块.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
