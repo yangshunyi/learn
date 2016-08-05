@@ -19,7 +19,8 @@
 		return style;
 	}
 	
-	document.defaultView返回当前文档
-	
+	document.defaultView返回当前文档关联的window对象.
+	getComputedStyle()返回元素的计算后的css样式.
+
 
 
