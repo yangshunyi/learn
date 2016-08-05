@@ -2,6 +2,11 @@ js模块化编程   模块就是实现特定功能的一组方法. 独立性是�
 只有把不同的函数简单地放在一起，就算是一个模块.
 目前,通过javascript模块规范共有两种 commonJS和AMD.
 
+RequireJS目标是鼓励代码的模块化，可以用它来加速,优化代码,其主要目的是为了代码的模块化.
+模块它良好地定义了一个作用域来避免全局名称空间污染.它可以明显地列出其依赖关系,并以函数参数
+的形式将这些依赖进行注入，无需引用全局变量.
+
+
 node.js的模块系统,就是参照commonJS规划实现的.
 在CommonJS中，有一个全局性方法require(),用于加载模块.
 浏览器端模块，不能采用同步加载，只能采用异步加载，这就是AMD规范诞生的背景.
@@ -39,14 +44,94 @@ data-main属性的作用是指定网页程序的主模块.由于require.js默认
 　　
 加载的模块会以参数形成传入该函数，从而在回调函数内部就可以使用这些模块.
 
+require.config()写在主模块(main.js)的头部,参数就是一个对象，这个对象的paths属性指定各个模块
+的加载路径.
+ require.config({
+　　　　paths: {
+　　　　　　"jquery": "jquery.min",
+　　　　　　"underscore": "underscore.min",
+　　　　　　"backbone": "backbone.min"
+　　　　}
+　　});
+如果这些模块在其他目录，有两种写法.
+一种是逐一指定路径.
+另一种则是直接改变基目录.
+　require.config({
+　　　　baseUrl: "js/lib",
+　　　　paths: {
+　　　　　　"jquery": "jquery.min",
+　　　　　　"underscore": "underscore.min",
+　　　　　　"backbone": "backbone.min"
+　　　　}
+　　});
+如果某个模块在另一台主机上，也可以真接指定它的网址.
+　require.config({
+　　　　paths: {
+　　　　　　"jquery": "https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min"
+　　　　}
+　　});
+　　
 
+模块
 
+简单的值对
 
+如果一个模块仅含值对，没有任何依赖，则在define()中定义这些值对就好了：
 
+define({
+    color: "black",
+    size: "unisize"
+});
 
+函数式定义
 
+如果一个模块没有任何依赖，但需要一个做setup工作的函数，则在define()中定义该函数，并将其传给define()：
 
+define(function () {
+    //Do setup work here
 
+    return {
+        color: "black",
+        size: "unisize"
+    }
+});
+
+存在依赖的函数式定义
+
+如果模块存在依赖：则第一个参数是依赖的名称数组，第二个参数是函数，在模块的所有依赖加载完毕后，该函数会被调用来定义该模块，因此该模块应该返回一个定义了本模块的object。依赖关系会以参数的形式注入到该函数上，参数列表与依赖名称列表一一对应。
+  define(["./cart", "./inventory"], function(cart, inventory) {
+        //return an object to define the "my/shirt" module.
+        return {
+            color: "blue",
+            size: "large",
+            addToCart: function() {
+                inventory.decrement(this);
+                cart.add(this);
+            }
+        }
+    }
+  );
+  
+  严重不鼓励模块定义全局变量.另外,函参的顺序应与依赖顺序保存一致.
+  对模块的返回值类型并没有强制为一定是个object，任何函数的返回值都是允许的.
+  
+  定义一个命名模块
+  一些define()包含了一个模块名称作为首个参数:
+    define("foo/title",
+        ["my/cart", "my/inventory"],
+        function(cart, inventory) {
+            //Define foo/title object in here.
+       }
+    );
+    
+  这些常由优化工具生成.你也可以自己显式指定模块名称（不推荐).
+  
+  
+  
+  
+  
+  
+  
 
 
 
