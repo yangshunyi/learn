@@ -1,3 +1,25 @@
 1.行间样式表
 <h1 style="width:100px">
+
 2.浏览器默认样式
+
+3.外部样式表
+ <link rel="stylesheet"  href="style.css" />
+ 
+ 这是因为obj.style[attr]这个方法只能获取对象的行间样式
+ 
+ 用document.getElementById(‘element').style.xxx可以获取元素的样式信息，可是它获取的只是DOM元素style属性里的样式规则,对于通过class属性引用的外部样式表，就拿不到我们要的信息了.
+ 
+ DOM标准里有个全局方法getComputedStyle，可以获取到当前对象样式规则信息，如：getComputedStyle(obj,null).paddingLeft，就能获取到对象的左内边距.
+ 
+ IE不支持此方法，它有自己的一个实现方式，那就是currentStyle，不同于全局方法getComputedStyle，它是作为DOM元素属性存在的，如：obj.currentStyle.paddingLeft，在IE中就获取到对象的左内边距了.
+ 
+ function getcssStyle(ele, stylename) {
+		var style = document.defaultView.getComputedStyle(ele, "").getPropertyValue(stylename);
+		return style;
+	}
+	
+	document.defaultView返回当前文档
+	
+
+
