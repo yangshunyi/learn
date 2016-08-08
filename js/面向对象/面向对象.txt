@@ -1,0 +1,25 @@
+js面向对象编程
+js是一种基于对象的语言.
+
+构造函数模式
+
+为了解决从原型对象生成实例的问题，js提供一种构造函数模式.
+
+所谓的构造函数，其实就是一个普通函数，但是内部使用this变量.对构造函数用new运算符，就能生成实例,并且this变量会
+绑定在实例对象上.
+   
+   如 猫的原型对象可以这样写,
+      function Cat(name,color){
+　　　　this.name=name;
+　　　　this.color=color;
+　　}
+　　我们现在可以生成实例对象.
+　
+　　   var cat1 = new Cat("大毛","黄色");
+　　   var cat2 = new Cat("二毛","黑色");
+　　    alert(cat1.name); // 大毛
+　　    alert(cat1.color); // 黄色
+　　    
+　　 现在cat1和cat2会自动含有constructor属性，指向它们的构造函数．
+　　 
+      
