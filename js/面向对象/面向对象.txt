@@ -176,7 +176,9 @@ js是一种基于对象的语言.
 　　
    Javascript面向对象编程（三）：非构造函数的继承
    
-   
+  见博客 
+  http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html
+  
    
    
    
